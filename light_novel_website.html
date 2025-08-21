@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TruyenVN - Đọc Truyện Chữ Online</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #3b82f6;
+            --secondary-color: #1e293b;
+            --accent-color: #f97316;
+            --text-color: #1f2937;
+            --bg-color: #ffffff;
+            --card-bg: #f8fafc;
+            --border-color: #e2e8f0;
+        }
+
+        [data-theme="dark"] {
+            --text-color: #f1f5f9;
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --border-color: #334155;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            transition: all 0.3s ease;
+        }
+
+        /* Header Styles */
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: white !important;
+        }
+
+        .navbar-nav .nav-link {
+            color: rgba(255,255,255,0.9) !important;
+            font-weight: 500;
+            margin: 0 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: var(--accent-color) !important;
+            transform: translateY(-1px);
+        }
+
+        .search-container {
+            position: relative;
+            max-width: 400px;
+        }
+
+        .search-input {
+            border-radius: 25px;
+            border: none;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            background: rgba(255,255,255,0.15);
+            color: white;
+            backdrop-filter: blur(10px);
+        }
+
+        .search-input::placeholder {
+            color: rgba(255,255,255,0.7);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255,255,255,0.7);
+        }
+
+        .theme-toggle {
+            background: none;
+            border: 2px solid rgba(255,255,255,0.3);
+            color: white;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        /* Google Ads Placeholder - Header */
+        .ads-header {
+            background: #f0f0f0;
+            border: 2px dashed #ccc;
+            padding: 10px;
+            text-align: center;
+            margin: 10px 0;
+            font-size: 12px;
+            color: #666;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            min-height: calc(100vh - 200px);
+            padding: 2rem 0;
+        }
+
+        .content-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .content-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+
+        .chapter-list {
+            list-style: none;
+        }
+
+        .chapter-item {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .chapter-item:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .chapter-link {
+            text-decoration: none;
+            color: inherit;
+            font-weight: 500;
+            flex: 1;
+        }
+
+        .chapter-date {
+            font-size: 0.875rem;
+            opacity: 0.7;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            border: 1px solid var(--border-color);
+            height: fit-content;
+            position: sticky;
+            top: 2rem;
+        }
+
+        .sidebar-title {
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .recommended-item {
+            display: flex;
+            margin-bottom: 1rem;
+            padding: 0.75rem;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .recommended-item:hover {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+            transform: scale(1.02);
+        }
+
+        .recommended-cover {
+            width: 50px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            border-radius: 8px;
+            margin-right: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.75rem;
+        }
+
+        .recommended-info h6 {
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .recommended-info small {
+            opacity: 0.8;
+        }
+
+        /* Google Ads Placeholder - Sidebar */
+        .ads-sidebar {
+            background: #f0f0f0;
+            border: 2px dashed #ccc;
+            padding: 15px;
+            text-align: center;
+            margin: 20px 0;
+            border-radius: 10px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        /* Pagination Styles */
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+
+        .pagination .page-link {
+            color: var(--primary-color);
+            border: 1px solid var(--border-color);
+            margin: 0 0.25rem;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+
+        .pagination .page-link:hover {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+
+        .pagination .active .page-link {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        /* Footer Styles */
+        .footer {
+            background: var(--secondary-color);
+            color: white;
+            padding: 2rem 0 1rem;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-section h5 {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .footer-section a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: var(--accent-color);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.7);
+        }
+
+        /* Reading Content Styles */
+        .reading-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            text-align: justify;
+            padding: 2rem;
+            background: var(--card-bg);
+            border-radius: 15px;
+            margin: 1rem 0;
+        }
+
+        .reading-content p {
+            margin-bottom: 1.5rem;
+            text-indent: 2rem;
+        }
+
+        /* Google Ads Placeholder - Content */
+        .ads-content {
+            background: #f0f0f0;
+            border: 2px dashed #ccc;
+            padding: 20px;
+            text-align: center;
+            margin: 30px 0;
+            border-radius: 10px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .sidebar {
+                margin-top: 2rem;
+            }
+            
+            .search-container {
+                max-width: 100%;
+                margin: 1rem 0;
+            }
+            
+            .content-card {
+                padding: 1rem;
+            }
+            
+            .reading-content {
+                padding: 1rem;
+                font-size: 1rem;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .spinner {
+            border: 3px solid rgba(59, 130, 246, 0.3);
+            border-top: 3px solid var(--primary-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="#" onclick="showHome()">
+                <i class="fas fa-book-open me-2"></i>TruyenVN
+            </a>
+            
+            <!-- Google Ads Placeholder - Header -->
+            <div class="ads-header d-none d-lg-block">
+                <!-- ĐÂY LÀ VỊ TRÍ CHÈN GOOGLE ADS HEADER - Thay thế bằng script Google Ads -->
+                [Google Ads - Header Banner 728x90]
+            </div>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showHome()">
+                            <i class="fas fa-home me-1"></i>Trang chủ
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showCategories()">
+                            <i class="fas fa-list me-1"></i>Thể loại
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showTopNovels()">
+                            <i class="fas fa-trophy me-1"></i>Top truyện
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="showContact()">
+                            <i class="fas fa-envelope me-1"></i>Liên hệ
+                        </a>
+                    </li>
+                </ul>
+                
+                <div class="d-flex align-items-center">
+                    <div class="search-container me-3">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" class="form-control search-input" placeholder="Tìm kiếm truyện..." id="searchInput">
+                    </div>
+                    <button class="theme-toggle" onclick="toggleTheme()" title="Chuyển đổi chế độ">
+                        <i class="fas fa-moon" id="themeIcon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container main-content">
+        <div class="row">
+            <!-- Main Content Area -->
+            <div class="col-lg-8">
+                <!-- Loading Animation -->
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <p>Đang tải...</p>
+                </div>
+
+                <!-- Content Display -->
+                <div id="contentArea">
+                    <!-- Home Page Content -->
+                    <div id="homePage">
+                        <div class="content-card">
+                            <h2 class="mb-4">
+                                <i class="fas fa-fire text-warning me-2"></i>Truyện Hot
+                            </h2>
+                            
+                            <!-- Google Ads Placeholder - Content Top -->
+                            <div class="ads-content">
+                                <!-- ĐÂY LÀ VỊ TRÍ CHÈN GOOGLE ADS CONTENT - Thay thế bằng script Google Ads -->
+                                [Google Ads - Content Banner 728x90]
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-4">
+                                    <div class="card h-100 border-0 shadow-sm">
+                                        <div class="card-body">
+                                            <h5 class="card-title">
+                                                <a href="#" onclick="showChapterList('novel1')" class="text-decoration-none">
+                                                    Kiếm Lai
+                                                </a>
+                                            </h5>
+                                            <p class="card-text text-muted">
+                                                Một câu chuyện về hành trình tu luyện kiếm đạo của thiếu niên...
+                                            </p>
+                                            <div class="d-flex justify-content-between">
+                                                <small class="text-muted">
+                                                    <i class="fas fa-eye me-1"></i>125K lượt đọc
+                                                </small>
+                                                <small class="text-muted">
+                                                    <i class="fas fa-clock me-1"></i>2 giờ trước
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6 mb-4">
+                                    <div class="card h-100 border-0 shadow-sm">
+                                        <div class="card-body">
+                                            <h5 class="card-title">
+                                                <a href="#" onclick="showChapterList('novel2')" class="text-decoration-none">
+                                                    Thần Thoại Hiện Đại
+                                                </a>
+                                            </h5>
+                                            <p class="card-text text-muted">
+                                                Khi các vị thần cổ đại tỉnh dậy trong thế giới hiện đại...
+                                            </p>
+                                            <div class="d-flex justify-content-between">
+                                                <small class="text-muted">
+                                                    <i class="fas fa-eye me-1"></i>98K lượt đọc
+                                                </small>
+                                                <small class="text-muted">
+                                                    <i class="fas fa-clock me-1"></i>5 giờ trước
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chapter List Page -->
+                    <div id="chapterListPage" style="display: none;">
+                        <div class="content-card">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h2 id="novelTitle">Danh sách chương</h2>
+                                <button class="btn btn-outline-primary" onclick="showHome()">
+                                    <i class="fas fa-arrow-left me-2"></i>Quay lại
+                                </button>
+                            </div>
+                            
+                            <ul class="chapter-list" id="chapterList">
+                                <!-- Chapters will be loaded here dynamically -->
+                            </ul>
+                            
+                            <!-- Pagination -->
+                            <div class="pagination-container">
+                                <nav>
+                                    <ul class="pagination">
+                                        <li class="page-item">
+                                            <a class="page-link" href="#"><i class="fas fa-angle-left"></i></a>
+                                        </li>
+                                        <li class="page-item active">
+                                            <a class="page-link" href="#">1</a>
+                                        </li>
+                                        <li class="page-item">
+                                            <a class="page-link" href="#">2</a>
+                                        </li>
+                                        <li class="page-item">
+                                            <a class="page-link" href="#">3</a>
+                                        </li>
+                                        <li class="page-item">
+                                            <a class="page-link" href="#"><i class="fas fa-angle-right"></i></a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Reading Page -->
+                    <div id="readingPage" style="display: none;">
+                        <div class="content-card">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <div>
+                                    <h3 id="chapterTitle">Chương 1: Bắt đầu</h3>
+                                    <p class="text-muted mb-0" id="novelName">Tên truyện</p>
+                                </div>
+                                <button class="btn btn-outline-primary" onclick="showChapterList('current')">
+                                    <i class="fas fa-list me-2"></i>Danh sách chương
+                                </button>
+                            </div>
+                            
+                            <!-- Reading Content -->
+                            <div class="reading-content" id="readingContent">
+                                <!-- Chapter content will be loaded here -->
+                            </div>
+                            
+                            <!-- Google Ads Placeholder - Mid Content -->
+                            <div class="ads-content">
+                                <!-- ĐÂY LÀ VỊ TRÍ CHÈN GOOGLE ADS GIỮA NỘI DUNG - Thay thế bằng script Google Ads -->
+                                [Google Ads - Content Rectangle 300x250]
+                            </div>
+                            
+                            <!-- Chapter Navigation -->
+                            <div class="d-flex justify-content-between mt-4">
+                                <button class="btn btn-primary" onclick="previousChapter()">
+                                    <i class="fas fa-chevron-left me-2"></i>Chương trước
+                                </button>
+                                <button class="btn btn-primary" onclick="nextChapter()">
+                                    Chương sau<i class="fas fa-chevron-right ms-2"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <div class="sidebar">
+                    <h5 class="sidebar-title">
+                        <i class="fas fa-star me-2"></i>Truyện đề xuất
+                    </h5>
+                    
+                    <!-- Google Ads Placeholder - Sidebar Top -->
+                    <div class="ads-sidebar">
+                        <!-- ĐÂY LÀ VỊ TRÍ CHÈN GOOGLE ADS SIDEBAR - Thay thế bằng script Google Ads -->
+                        [Google Ads - Sidebar 300x250]
+                    </div>
+                    
+                    <div class="recommended-item" onclick="showChapterList('rec1')">
+                        <div class="recommended-cover">REC</div>
+                        <div class="recommended-info">
+                            <h6>Ma Đạo Tổ Sư</h6>
+                            <small>Chương 450</small>
+                        </div>
+                    </div>
+                    
+                    <div class="recommended-item" onclick="showChapterList('rec2')">
+                        <div class="recommended-cover">HOT</div>
+                        <div class="recommended-info">
+                            <h6>Đấu Phá Thương Khung</h6>
+                            <small>Chương 1200</small>
+                        </div>
+                    </div>
+                    
+                    <div class="recommended-item" onclick="showChapterList('rec3')">
+                        <div class="recommended-cover">NEW</div>
+                        <div class="recommended-info">
+                            <h6>Toàn Chức Pháp Sư</h6>
+                            <small>Chương 890</small>
+                        </div>
+                    </div>
+                    
+                    <div class="recommended-item" onclick="showChapterList('rec4')">
+                        <div class="recommended-cover">TOP</div>
+                        <div class="recommended-info">
+                            <h6>Linh Vực</h6>
+                            <small>Chương 2000</small>
+                        </div>
+                    </div>
+                    
+                    <!-- Google Ads Placeholder - Sidebar Bottom -->
+                    <div class="ads-sidebar">
+                        <!-- ĐÂY LÀ VỊ TRÍ CHÈN GOOGLE ADS SIDEBAR - Thay thế bằng script Google Ads -->
+                        [Google Ads - Sidebar Banner 300x100]
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h5><i class="fas fa-info-circle me-2"></i>Về chúng tôi</h5>
+                    <p>TruyenVN là nền tảng đọc truyện chữ online hàng đầu Việt Nam, cung cấp hàng ngàn bộ truyện chất lượng cao.</p>
+                    <div class="social-links">
+                        <a href="#" class="me-3"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="me-3"><i class="fab fa-telegram"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h5><i class="fas fa-list me-2"></i>Thể loại</h5>
+                    <a href="#">Tiên hiệp</a>
+                    <a href="#">Huyền huyền</a>
+                    <a href="#">Đô thị</a>
+                    <a href="#">Lịch sử</a>
+                    <a href="#">Khoa học viễn tưởng</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h5><i class="fas fa-trophy me-2"></i>Bảng xếp hạng</h5>
+                    <a href="#">Top tháng</a>
+                    <a href="#">Top tuần</a>
+                    <a href="#">Top ngày</a>
+                    <a href="#">Truyện hot</a>
+                    <a href="#">Truyện mới</a>
+                </div>
+                
+                <div class="footer-section">
+                    <h5><i class="fas fa-envelope me-2"></i>Liên hệ</h5>
+                    <p><i class="fas fa-map-marker-alt me-2"></i>123 Đường ABC, Quận 1, TP.HCM</p>
+                    <p><i class="fas fa-phone me-2"></i>0123 456 789</p>
+                    <p><i class="fas fa-envelope me-2"></i>contact@truyenvn.com</p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 TruyenVN. Tất cả quyền được bảo lưu. | 
+                   <a href="#" class="text-decoration-none">Điều khoản sử dụng</a> | 
+                   <a href="#" class="text-decoration-none">Chính sách bảo mật</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // ================== DATA SIMULATION ==================
+        // Mô phỏng dữ liệu truyện (thay thế bằng API thực tế)
+        const novelsData = {
+            'novel1': {
+                title: 'Kiếm Lai',
+                chapters: [
+                    { id: 1, title: 'Chương 1: Khởi đầu hành trình', date: '2024-01-15' },
+                    { id: 2, title: 'Chương 2: Gặp gỡ sư phụ', date: '2024-01-16' },
+                    { id: 3, title: 'Chương 3: Bài học đầu tiên', date: '2024-01-17' },
+                    { id: 4, title: 'Chương 4: Thử thách', date: '2024-01-18' },
+                    { id: 5, title: 'Chương 5: Đột phá', date: '2024-01-19' }
+                ]
+            },
+            'novel2': {
+                title: 'Thần Thoại Hiện Đại',
+                chapters: [
+                    { id: 1, title: 'Chương 1: Thế giới thay đổi', date: '2024-01-10' },
+                    { id: 2, title: 'Chương 2: Sức mạnh tỉnh thức', date: '2024-01-11' },
+                    { id: 3, title: 'Chương 3: Cuộc chiến đầu tiên', date: '2024-01-12' }
+                ]
+            }
+        };
+
+        const chapterContent = {
+            1: `
+                <p>Mặt trời vừa ló dạng trên đỉnh núi xa, ánh sáng vàng óng chiếu xuống thung lũng nhỏ nơi Lâm Phong đang ngồi thiền định. Hơi thở đều đặn, tâm trí tĩnh lặng như mặt hồ không gợn sóng.</p>
+                
+                <p>Từ khi bắt đầu tu luyện, đã ba năm trôi qua. Ba năm với vô số thăng trầm, khó khăn và thử thách. Nhưng hôm nay, Lâm Phong cảm nhận được một sự khác biệt rõ rệt trong cơ thể mình.</p>
+                
+                <p>"Khí huyết vận hành trơn tru hơn, kinh mạch cũng rộng mở hơn..." cậu thầm nghĩ, từ từ mở mắt.</p>
+                
+                <p>Đột nhiên, một tiếng động lạ phát ra từ phía sau. Lâm Phong nhanh chóng quay lại, chỉ thấy một bóng đen lướt qua giữa những tàng cây. Trực giác báo hiệu nguy hiểm, cậu lập tức đứng dậy và rút thanh kiếm gỗ đang đeo bên hông.</p>
+                
+                <p>"Ai đó? Ra đây!" giọng nói của Lâm Phong vang vọng trong thung lũng.</p>
+                
+                <p>Một tiếng cười khàn khàn vang lên: "Haha, không ngờ ở nơi hẻo lánh này lại có một thiếu niên tu luyện. Thật thú vị!"</p>
+                
+                <p>Từ trong bóng tối, một người đàn ông trung niên bước ra, trên mặt là nụ cười đầy ác ý. Y ta mặc áo đen, mắt long lanh ánh sáng lạnh lùng.</p>
+                
+                <p>"Ngươi là ai? Tại sao lại xuất hiện ở đây?" Lâm Phong cảnh giác hỏi.</p>
+                
+                <p>"Ta là Hắc Phong, một kẻ lang thang. Thấy ngươi tu luyện ở đây nên tò mò muốn xem ngươi có tài năng gì." Người đàn ông nói với giọng điệu thản nhiên nhưng ánh mắt vẫn lạnh lùng.</p>
+            `,
+            2: `
+                <p>Sau cuộc đối thoại căng thẳng với Hắc Phong, Lâm Phong quyết định rời khỏi thung lũng để tìm kiếm sư phụ. Theo lời của cha mình, sư phụ là một cao thủ ẩn dật sống trên đỉnh Thiên Sơn.</p>
+                
+                <p>Hành trình leo núi không hề dễ dàng. Những con đường núi hiểm trở, thời tiết khắc nghiệt và các loài dã thú hung dữ đều là những thử thách mà Lâm Phong phải đối mặt.</p>
+                
+                <p>Đến ngày thứ ba, khi mặt trời gần lặn, Lâm Phong cuối cùng cũng nhìn thấy một ngôi nhà nhỏ được xây dựng bằng đá trên đỉnh núi. Khói bếp bốc lên từ ống khói, chứng tỏ có người sinh sống.</p>
+                
+                <p>"Có lẽ đây chính là nơi sư phụ cư trú," Lâm Phong thầm nghĩ và bước tới gõ cửa.</p>
+                
+                <p>Cửa mở ra, một ông lão tóc bạc trắng, khuôn mặt từ tâm xuất hiện. Đôi mắt ông sáng như sao, nhìn xuyên thấu tâm hồn người đối diện.</p>
+                
+                <p>"Ngươi là con của Lâm Thiên Hạ?" ông lão hỏi trước khi Lâm Phong kịp mở miệng.</p>
+            `,
+            3: `
+                <p>"Đúng vậy, con chính là con trai của Lâm Thiên Hạ. Con tìm đến đây để học võ với sư phụ," Lâm Phong cung kính nói.</p>
+                
+                <p>Ông lão gật đầu: "Ta là Kiếm Thánh Độc Cô. Cha ngươi từng là đệ tử của ta, nhưng y đã chọn con đường khác. Hôm nay ngươi tới đây, chứng tỏ duyên phận đã tới."</p>
+                
+                <p>Lâm Phong không khỏi bất ngờ. Cha mình từng là đệ tử của Kiếm Thánh Độc Cô - một trong những cao thủ huyền thoại của võ lâm.</p>
+                
+                <p>"Nhưng ta không dễ dàng nhận đệ tử. Ngươi phải trải qua ba thử thách của ta mới có thể chính thức bái sư," Kiếm Thánh nói.</p>
+                
+                <p>"Con sẵn sàng!" Lâm Phong kiên quyết đáp.</p>
+                
+                <p>"Thử thách đầu tiên: Ngươi phải ngồi thiền dưới thác nước kia trong suốt một ngày một đêm mà không được rời khỏi chỗ ngồi."</p>
+                
+                <p>Lâm Phong nhìn về phía thác nước mà Kiếm Thánh chỉ tay. Đó là một dòng thác cao hơn mười mét, nước đổ xuống như hàng ngàn mũi tên bắn.</p>
+            `,
+            4: `
+                <p>Buổi sáng hôm sau, Lâm Phong đã chuẩn bị tinh thần để đối mặt với thử thách đầu tiên. Cậu ngồi xuống tư thế kiết già dưới dòng thác, nước lạnh như băng đổ xuống đầu và vai.</p>
+                
+                <p>Giờ đầu tiên còn chịu đựng được, nhưng càng lúc càng khó khăn. Nước thác không ngừng đập vào cơ thể, gây ra cảm giác tê buốt và đau đớn. Tâm trí cậu bắt đầu dao động.</p>
+                
+                <p>"Không được! Ta phải kiên trì!" Lâm Phong cắn răng chịu đựng.</p>
+                
+                <p>Thời gian trôi qua như rùa bò. Mặt trời lên rồi lặn, trăng tròn hiện ra trên bầu trời. Lâm Phong vẫn ngồi bất động dưới thác nước, cơ thể tuy run rẩy nhưng ý chí không hề dao động.</p>
+                
+                <p>Khi ánh bình minh đầu tiên chiếu xuống, Kiếm Thánh xuất hiện: "Tốt lắm! Ngươi đã vượt qua thử thách đầu tiên. Hãy nghỉ ngơi và chuẩn bị cho thử thách thứ hai."</p>
+                
+                <p>Lâm Phong từ từ đứng dậy, cơ thể tê cứng nhưng trong mắt lóe lên tia sáng chiến thắng.</p>
+            `,
+            5: `
+                <p>Sau một ngày nghỉ ngơi, Lâm Phong đã phục hồi hoàn toàn. Kiếm Thánh dẫn cậu đến một khu rừng tre xanh mướt.</p>
+                
+                <p>"Thử thách thứ hai: Ngươi phải tìm được thanh kiếm ẩn trong khu rừng này. Nhưng đừng nghĩ đó là việc dễ dàng, có rất nhiều cơ quan bẫy được đặt ở đây."</p>
+                
+                <p>Lâm Phong gật đầu và bước vào rừng tre. Âm thanh gió thổi qua lá tre tạo ra những tiếng động kỳ lạ. Cậu cẩn thận quan sát từng bước chân.</p>
+                
+                <p>Đột nhiên, một mũi tên bắn ra từ bên trái. Lâm Phong nhanh chóng nghiêng người tránh. Ngay lập tức, thêm hai mũi tên khác bay tới từ hai hướng khác nhau.</p>
+                
+                <p>"Phải bình tĩnh và tập trung," cậu tự nhắc nhở mình.</p>
+                
+                <p>Sử dụng những gì đã học được trong ba năm tu luyện, Lâm Phong từng bước vượt qua các cạm bẫy. Cuối cùng, trong một thân cây tre cổ thụ, cậu tìm thấy một thanh kiếm phát ra ánh sáng mờ nhạt.</p>
+                
+                <p>"Ta đã tìm thấy!" Lâm Phong vui mừng rút kiếm ra khỏi thân cây.</p>
+            `
+        };
+        
+        // ================== GLOBAL VARIABLES ==================
+        let currentNovel = '';
+        let currentChapter = 1;
+        let isDarkMode = localStorage.getItem('darkMode') === 'true';
+        
+        // ================== THEME TOGGLE ==================
+        function toggleTheme() {
+            isDarkMode = !isDarkMode;
+            localStorage.setItem('darkMode', isDarkMode);
+            document.documentElement.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
+            document.getElementById('themeIcon').className = isDarkMode ? 'fas fa-sun' : 'fas fa-moon';
+        }
+        
+        // Initialize theme
+        document.documentElement.setAttribute('data-theme', isDarkMode ? 'dark' : 'light');
+        document.getElementById('themeIcon').className = isDarkMode ? 'fas fa-sun' : 'fas fa-moon';
+        
+        // ================== NAVIGATION FUNCTIONS ==================
+        function showLoading() {
+            document.getElementById('loading').classList.add('show');
+            document.getElementById('contentArea').style.display = 'none';
+        }
+        
+        function hideLoading() {
+            document.getElementById('loading').classList.remove('show');
+            document.getElementById('contentArea').style.display = 'block';
+        }
+        
+        function hideAllPages() {
+            document.getElementById('homePage').style.display = 'none';
+            document.getElementById('chapterListPage').style.display = 'none';
+            document.getElementById('readingPage').style.display = 'none';
+        }
+        
+        function showHome() {
+            showLoading();
+            setTimeout(() => {
+                hideAllPages();
+                document.getElementById('homePage').style.display = 'block';
+                hideLoading();
+            }, 500);
+        }
+        
+        function showCategories() {
+            showLoading();
+            setTimeout(() => {
+                hideAllPages();
+                // Tạo trang thể loại động
+                const homePage = document.getElementById('homePage');
+                homePage.innerHTML = `
+                    <div class="content-card">
+                        <h2 class="mb-4">
+                            <i class="fas fa-list text-primary me-2"></i>Thể loại truyện
+                        </h2>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <div class="card border-0 shadow-sm h-100">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-dragon text-primary mb-3" style="font-size: 2rem;"></i>
+                                        <h5>Tiên hiệp</h5>
+                                        <p class="text-muted">1,234 truyện</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="card border-0 shadow-sm h-100">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-magic text-warning mb-3" style="font-size: 2rem;"></i>
+                                        <h5>Huyền huyền</h5>
+                                        <p class="text-muted">892 truyện</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="card border-0 shadow-sm h-100">
+                                    <div class="card-body text-center">
+                                        <i class="fas fa-city text-success mb-3" style="font-size: 2rem;"></i>
+                                        <h5>Đô thị</h5>
+                                        <p class="text-muted">567 truyện</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                homePage.style.display = 'block';
+                hideLoading();
+            }, 500);
+        }
+        
+        function showTopNovels() {
+            showLoading();
+            setTimeout(() => {
+                hideAllPages();
+                const homePage = document.getElementById('homePage');
+                homePage.innerHTML = `
+                    <div class="content-card">
+                        <h2 class="mb-4">
+                            <i class="fas fa-trophy text-warning me-2"></i>Top truyện hot
+                        </h2>
+                        <div class="list-group list-group-flush">
+                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-center">
+                                    <span class="badge bg-warning rounded-pill me-3">1</span>
+                                    <div>
+                                        <h6 class="mb-0">Kiếm Lai</h6>
+                                        <small class="text-muted">125,432 lượt đọc</small>
+                                    </div>
+                                </div>
+                                <i class="fas fa-fire text-danger"></i>
+                            </div>
+                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-center">
+                                    <span class="badge bg-secondary rounded-pill me-3">2</span>
+                                    <div>
+                                        <h6 class="mb-0">Thần Thoại Hiện Đại</h6>
+                                        <small class="text-muted">98,765 lượt đọc</small>
+                                    </div>
+                                </div>
+                                <i class="fas fa-trending-up text-success"></i>
+                            </div>
+                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-center">
+                                    <span class="badge bg-dark rounded-pill me-3">3</span>
+                                    <div>
+                                        <h6 class="mb-0">Ma Đạo Tổ Sư</h6>
+                                        <small class="text-muted">87,321 lượt đọc</small>
+                                    </div>
+                                </div>
+                                <i class="fas fa-star text-warning"></i>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                homePage.style.display = 'block';
+                hideLoading();
+            }, 500);
+        }
+        
+        function showContact() {
+            showLoading();
+            setTimeout(() => {
+                hideAllPages();
+                const homePage = document.getElementById('homePage');
+                homePage.innerHTML = `
+                    <div class="content-card">
+                        <h2 class="mb-4">
+                            <i class="fas fa-envelope text-primary me-2"></i>Liên hệ với chúng tôi
+                        </h2>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Họ tên</label>
+                                    <input type="text" class="form-control" placeholder="Nhập họ tên của bạn">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" class="form-control" placeholder="Nhập email của bạn">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Tiêu đề</label>
+                                    <input type="text" class="form-control" placeholder="Tiêu đề tin nhắn">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Nội dung</label>
+                                    <textarea class="form-control" rows="5" placeholder="Nội dung tin nhắn"></textarea>
+                                </div>
+                                <button class="btn btn-primary">
+                                    <i class="fas fa-paper-plane me-2"></i>Gửi tin nhắn
+                                </button>
+                            </div>
+                            <div class="col-md-6">
+                                <h5 class="mb-3">Thông tin liên hệ</h5>
+                                <p><i class="fas fa-map-marker-alt text-primary me-2"></i>123 Đường ABC, Quận 1, TP.HCM</p>
+                                <p><i class="fas fa-phone text-success me-2"></i>0123 456 789</p>
+                                <p><i class="fas fa-envelope text-info me-2"></i>contact@truyenvn.com</p>
+                                <p><i class="fas fa-clock text-warning me-2"></i>Thứ 2 - Chủ nhật: 8:00 - 22:00</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                homePage.style.display = 'block';
+                hideLoading();
+            }, 500);
+        }
+        
+        function showChapterList(novelId) {
+            showLoading();
+            currentNovel = novelId;
+            
+            setTimeout(() => {
+                hideAllPages();
+                
+                const novel = novelsData[novelId];
+                if (novel) {
+                    document.getElementById('novelTitle').textContent = novel.title;
+                    
+                    const chapterList = document.getElementById('chapterList');
+                    chapterList.innerHTML = '';
+                    
+                    novel.chapters.forEach(chapter => {
+                        const li = document.createElement('li');
+                        li.className = 'chapter-item';
+                        li.innerHTML = `
+                            <a href="#" class="chapter-link" onclick="showChapter(${chapter.id}, '${novel.title}', '${chapter.title}')">
+                                ${chapter.title}
+                            </a>
+                            <span class="chapter-date">${formatDate(chapter.date)}</span>
+                        `;
+                        chapterList.appendChild(li);
+                    });
+                } else {
+                    // Tạo danh sách chương mẫu cho các truyện khác
+                    const titles = {
+                        'rec1': 'Ma Đạo Tổ Sư',
+                        'rec2': 'Đấu Phá Thương Khung', 
+                        'rec3': 'Toàn Chức Pháp Sư',
+                        'rec4': 'Linh Vực'
+                    };
+                    
+                    const novelTitle = titles[novelId] || 'Truyện mẫu';
+                    document.getElementById('novelTitle').textContent = novelTitle;
+                    
+                    const chapterList = document.getElementById('chapterList');
+                    chapterList.innerHTML = '';
+                    
+                    for (let i = 1; i <= 10; i++) {
+                        const li = document.createElement('li');
+                        li.className = 'chapter-item';
+                        li.innerHTML = `
+                            <a href="#" class="chapter-link" onclick="showChapter(${i}, '${novelTitle}', 'Chương ${i}: Phần ${i}')">
+                                Chương ${i}: Phần ${i}
+                            </a>
+                            <span class="chapter-date">${formatDate('2024-01-15')}</span>
+                        `;
+                        chapterList.appendChild(li);
+                    }
+                }
+                
+                document.getElementById('chapterListPage').style.display = 'block';
+                hideLoading();
+            }, 500);
+        }
+        
+        function showChapter(chapterId, novelTitle, chapterTitle) {
+            showLoading();
+            currentChapter = chapterId;
+            
+            setTimeout(() => {
+                hideAllPages();
+                
+                document.getElementById('chapterTitle').textContent = chapterTitle;
+                document.getElementById('novelName').textContent = novelTitle;
+                
+                // Load nội dung chương - ưu tiên nội dung có sẵn, nếu không có thì tạo nội dung mẫu
+                let content = chapterContent[chapterId];
+                
+                if (!content) {
+                    // Tạo nội dung mẫu cho các chương không có sẵn
+                    content = `
+                        <p>Đây là đoạn mở đầu của ${chapterTitle} trong truyện "${novelTitle}". Câu chuyện tiếp tục phát triển với những tình tiết hấp dẫn và lôi cuốn.</p>
+                        
+                        <p>Nhân vật chính đang đối mặt với một thử thách mới trong hành trình của mình. Những quyết định quan trọng phải được đưa ra, và mỗi lựa chọn đều có thể thay đổi cả quá trình phát triển của câu chuyện.</p>
+                        
+                        <p>Trong không gian yên tĩnh của buổi sáng sớm, ánh nắng nhẹ nhàng chiếu qua cửa sổ, tạo nên những vệt sáng lung linh trên sàn nhà. Không khí trong lành mang theo hương thơm của những bông hoa nở rộ ngoài vườn.</p>
+                        
+                        <p>Tâm trạng của nhân vật có những biến chuyển tinh tế, phản ánh sự trưởng thành qua từng trải nghiệm. Những kỷ niệm quá khứ đan xen với hiện tại, tạo nên một bức tranh đầy màu sắc về cuộc sống.</p>
+                        
+                        <p>Chương này kết thúc với một khúc quanh bất ngờ, mở ra những khả năng mới cho các chương tiếp theo. Độc giả sẽ được theo dõi hành trình đầy thú vị của nhân vật trong những trang sắp tới.</p>
+                        
+                        <p><em>Hãy tiếp tục theo dõi để khám phá những điều thú vị sắp xảy ra trong "${novelTitle}"!</em></p>
+                    `;
+                }
+                
+                document.getElementById('readingContent').innerHTML = content;
+                document.getElementById('readingPage').style.display = 'block';
+                hideLoading();
+                
+                // Scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 800);
+        }
+        
+        function previousChapter() {
+            if (currentChapter > 1) {
+                const novelName = document.getElementById('novelName').textContent;
+                const newChapterTitle = `Chương ${currentChapter - 1}: ${getChapterSubtitle(currentChapter - 1)}`;
+                showChapter(currentChapter - 1, novelName, newChapterTitle);
+            } else {
+                showAlert('Đây là chương đầu tiên!', 'info');
+            }
+        }
+        
+        function nextChapter() {
+            const novelName = document.getElementById('novelName').textContent;
+            const newChapterTitle = `Chương ${currentChapter + 1}: ${getChapterSubtitle(currentChapter + 1)}`;
+            showChapter(currentChapter + 1, novelName, newChapterTitle);
+        }
+        
+        function getChapterSubtitle(chapterNum) {
+            const subtitles = {
+                1: 'Khởi đầu hành trình',
+                2: 'Gặp gỡ sư phụ', 
+                3: 'Bài học đầu tiên',
+                4: 'Thử thách',
+                5: 'Đột phá',
+                6: 'Kẻ thù xuất hiện',
+                7: 'Trận chiến đầu tiên',
+                8: 'Bí mật được tiết lộ',
+                9: 'Sức mạnh mới',
+                10: 'Hành trình tiếp theo'
+            };
+            return subtitles[chapterNum] || `Phần ${chapterNum}`;
+        }
+        
+        function showAlert(message, type = 'info') {
+            // Tạo alert động thay vì dùng alert() cơ bản
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+            alertDiv.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+            alertDiv.innerHTML = `
+                <i class="fas fa-info-circle me-2"></i>${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            
+            document.body.appendChild(alertDiv);
+            
+            // Tự động xóa sau 3 giây
+            setTimeout(() => {
+                if (alertDiv.parentNode) {
+                    alertDiv.remove();
+                }
+            }, 3000);
+        }
+        
+        // ================== UTILITY FUNCTIONS ==================
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('vi-VN');
+        }
+        
+        // ================== SEARCH FUNCTIONALITY ==================
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const query = this.value.trim();
+                if (query) {
+                    performSearch(query);
+                }
+            }
+        });
+        
+        function performSearch(query) {
+            showLoading();
+            setTimeout(() => {
+                hideAllPages();
+                const homePage = document.getElementById('homePage');
+                homePage.innerHTML = `
+                    <div class="content-card">
+                        <h2 class="mb-4">
+                            <i class="fas fa-search text-primary me-2"></i>Kết quả tìm kiếm: "${query}"
+                        </h2>
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Tìm thấy 3 kết quả phù hợp với từ khóa "<strong>${query}</strong>"
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 mb-4">
+                                <div class="card border-0 shadow-sm">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Kiếm Lai</h5>
+                                        <p class="card-text">Một câu chuyện về hành trình tu luyện kiếm đạo...</p>
+                                        <button class="btn btn-primary" onclick="showChapterList('novel1')">Đọc truyện</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                homePage.style.display = 'block';
+                hideLoading();
+            }, 1000);
+        }
+        
+        // ================== INITIALIZATION ==================
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize tooltips if needed
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+            
+            console.log('Website đọc truyện chữ đã được khởi tạo thành công!');
+            console.log('Các vị trí Google Ads đã được đánh dấu trong code.');
+        });
+    </script>
+</body>
+</html>
